@@ -1,0 +1,19 @@
+
+Considerations
+The code has some issues:
+
+1 - It uses a super global variable $_SERVER["PHP_SELF"] which returns the filename of the currently executing script. A could enter a forward slash (/) and then some Cross Site Scripting (XSS) commands to execute.
+	Solutions:
+		1: use the htmlspecialchars() function to converts special characters to HTML, avoiding HTML and JS injection
+
+2 - It uses the legacy mysql_ functions, deprecated as of PHP 5.5 version, and completly removed starting from PHP 7.0 version.
+	Solution:
+		1: Either use the new and improved mysqli_ functions or use PDO, since the specification does not say anything about the DBMS, PDO would be a natural choice for me, because it supports different DBMS 
+
+3 - In the script, the select query is selecting everything, even data that is not required and executes queries directly, consuming more bandwidth and are more vulnerable to SQL injections
+	Solution:
+		1: select only columns that are needed
+		2: use prepared statements
+4 - The Password is not specified, so it would not connect, it would give a runtime exception
+
+5 - Does not handle exceptions
